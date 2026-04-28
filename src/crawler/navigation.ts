@@ -20,7 +20,10 @@ export class NavigationManager {
     // 전략 3: 오버레이 배경 클릭
     if (await this.tryOverlayClick()) return true;
 
-    // 전략 4: history.back()
+    // 전략 4: 에러/토스트 팝업 강제 닫기 (예외 처리)
+    if (await this.tryDismissErrorToast()) return true;
+
+    // 전략 5: history.back()
     if (await this.tryHistoryBack()) return true;
 
     return false;
@@ -89,6 +92,30 @@ export class NavigationManager {
         overlay.click();
         await delay(500);
         if (this.getLayerCount() < before) return true;
+      }
+    }
+
+    return false;
+  }
+
+  /**
+   * 에러 스낵바/토스트 및 예외 팝업 닫기 시도 (크롤링 방해 요소)
+   */
+  private async tryDismissErrorToast(): Promise<boolean> {
+    const errorSelectors = [
+      '.toast .close',
+      '.snackbar button',
+      '[role="alert"] button',
+      '[class*="toast"] button[class*="close"]',
+      '[class*="error"] button[class*="close"]'
+    ];
+
+    for (const selector of errorSelectors) {
+      const btn = document.querySelector(selector);
+      if (btn && btn instanceof HTMLElement) {
+        btn.click();
+        await delay(300);
+        return true; // 에러 토스트는 카운트에 안 들어갈 수 있으므로 클릭 시 바로 성공 처리
       }
     }
 

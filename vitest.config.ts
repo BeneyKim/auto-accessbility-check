@@ -1,15 +1,14 @@
-import { defineConfig } from 'vite';
-import { crx } from '@crxjs/vite-plugin';
-import manifest from './manifest.json';
+import { defineConfig } from 'vitest/config';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
-  plugins: [
-    crx({ manifest }),
-  ],
+  test: {
+    environment: 'jsdom',
+    globals: true,
+  },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, 'src'),
@@ -19,10 +18,5 @@ export default defineConfig({
       '@filter': path.resolve(__dirname, 'src/filter'),
       '@reporter': path.resolve(__dirname, 'src/reporter'),
     },
-  },
-  build: {
-    outDir: 'dist',
-    sourcemap: true,
-    chunkSizeWarningLimit: 1000,
   },
 });

@@ -12,6 +12,9 @@
   "host_permissions": [
     "https://my.lgthinq.com/*"
   ],
+  "icons": {
+    "128": "public/icons/icon128.png"
+  },
   "background": {
     "service_worker": "src/background/index.ts",
     "type": "module"

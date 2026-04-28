@@ -41,11 +41,10 @@ export class ElementDetector {
   private processedFingerprints: Set<string> = new Set();
 
   /**
-   * 현재 DOM에서 인터랙티브 요소 목록 수집
+   * 현재 DOM에서 인터랙티브 요소 목록 수집 (Shadow DOM 포함)
    */
   detect(root: Element | Document = document): InteractiveElement[] {
-    const container = root instanceof Document ? root.body : root;
-    const rawElements = container.querySelectorAll(INTERACTIVE_SELECTORS);
+    const rawElements = this.querySelectorAllDeep(root, INTERACTIVE_SELECTORS);
     const results: InteractiveElement[] = [];
 
     for (const element of rawElements) {
@@ -84,6 +83,27 @@ export class ElementDetector {
    */
   reset(): void {
     this.processedFingerprints.clear();
+  }
+
+  /**
+   * Shadow DOM을 통과하여 모든 요소를 재귀적으로 탐색
+   */
+  private querySelectorAllDeep(root: Element | Document | ShadowRoot, selector: string): Element[] {
+    const results: Element[] = [];
+    
+    // 현재 root 내에서 매칭되는 요소 찾기
+    const elements = root.querySelectorAll(selector);
+    results.push(...Array.from(elements));
+    
+    // 모든 하위 요소를 순회하며 shadowRoot가 있는 경우 재귀 탐색
+    const allNodes = root.querySelectorAll('*');
+    for (const node of allNodes) {
+      if (node.shadowRoot) {
+        results.push(...this.querySelectorAllDeep(node.shadowRoot, selector));
+      }
+    }
+    
+    return results;
   }
 
   /**
