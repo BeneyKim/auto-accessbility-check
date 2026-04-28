@@ -86,10 +86,16 @@ chrome.runtime.onConnect.addListener((port) => {
           // Content Script에 스캔 시작 메시지 전송
           const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
           if (tab?.id) {
-            chrome.tabs.sendMessage(tab.id, {
-              type: 'START_SCAN',
-              payload: currentConfig,
-            } as ExtensionMessage);
+            try {
+              await chrome.tabs.sendMessage(tab.id, {
+                type: 'START_SCAN',
+                payload: currentConfig,
+              } as ExtensionMessage);
+            } catch (err) {
+              console.warn('[Background] Failed to send START_SCAN. Content script might not be loaded. Please refresh the page.', err);
+              port.postMessage({ action: 'scanError', payload: '페이지를 새로고침한 후 다시 시도해주세요.' });
+              break;
+            }
           }
           port.postMessage({ action: 'scanStarted' });
           break;
@@ -97,10 +103,14 @@ chrome.runtime.onConnect.addListener((port) => {
         case 'stopScan':
           const [activeTab] = await chrome.tabs.query({ active: true, currentWindow: true });
           if (activeTab?.id) {
-            chrome.tabs.sendMessage(activeTab.id, {
-              type: 'STOP_SCAN',
-              payload: undefined,
-            } as ExtensionMessage);
+            try {
+              await chrome.tabs.sendMessage(activeTab.id, {
+                type: 'STOP_SCAN',
+                payload: undefined,
+              } as ExtensionMessage);
+            } catch (err) {
+              console.warn('[Background] Failed to send STOP_SCAN.', err);
+            }
           }
           if (latestProgress) latestProgress.status = 'stopped';
           port.postMessage({ action: 'scanStopped' });
@@ -163,15 +173,14 @@ async function handleScreenshot(_tabId?: number): Promise<string> {
 
 // ─── File Download ───────────────────────────────────────────
 function downloadReport(content: string, filename: string, mimeType: string): void {
-  const blob = new Blob([content], { type: mimeType });
-  const url = URL.createObjectURL(blob);
+  // MV3 Service Worker에서는 URL.createObjectURL(blob) 사용이 불가능하므로 Data URL 형식 사용
+  const base64Content = btoa(unescape(encodeURIComponent(content)));
+  const dataUrl = `data:${mimeType};base64,${base64Content}`;
 
   chrome.downloads.download({
-    url,
+    url: dataUrl,
     filename,
     saveAs: true,
-  }, () => {
-    URL.revokeObjectURL(url);
   });
 }
 
