@@ -1,10 +1,10 @@
-# LG ThinQ A11y Checker — Chrome Extension
+# LG ThinQ A11y Checker — Chrome & Edge Extension
 
 > IBM Accessibility Checker Engine(ACE v4) 기반 LG ThinQ Web 접근성 자동 검사 도구
 
 ## 📋 개요
 
-LG ThinQ Web(`https://my.lgthinq.com`)의 제품 제어 화면에서 모든 인터랙티브 요소를 자동으로 순회하며 접근성 이슈를 탐지하는 Chrome Extension입니다.
+LG ThinQ Web(`https://my.lgthinq.com`)의 제품 제어 화면에서 모든 인터랙티브 요소를 자동으로 순회하며 접근성 이슈를 탐지하는 확장 프로그램(Chrome 및 Microsoft Edge 완벽 지원)입니다.
 
 ### 주요 기능
 - **IBM ACE 엔진 통합**: `accessibility-checker-engine` v4 기반 자동 스캔
@@ -27,10 +27,19 @@ npm run dev
 npm run build
 ```
 
-### Chrome에 로드
+### 브라우저에 로드 (Chrome / Edge 공통)
+Microsoft Edge와 Chrome 모두 Chromium 기반이므로 동일한 방법으로 사용할 수 있습니다.
+
+#### Chrome
 1. Chrome에서 `chrome://extensions` 접속
 2. **개발자 모드** 활성화 (우측 상단)
 3. **압축해제된 확장 프로그램을 로드합니다** 클릭
+4. 프로젝트의 `dist` 디렉터리 선택
+
+#### Microsoft Edge
+1. Edge에서 `edge://extensions` 접속
+2. **개발자 모드** 활성화 (좌측 하단 메뉴)
+3. **압축 풀린 확장 로드** 클릭
 4. 프로젝트의 `dist` 디렉터리 선택
 
 ### 사용 방법
