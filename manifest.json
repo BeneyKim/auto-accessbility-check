@@ -16,13 +16,13 @@
     "128": "public/icons/icon128.png"
   },
   "background": {
-    "service_worker": "src/background/index.ts",
+    "service_worker": "src/background/background.ts",
     "type": "module"
   },
   "content_scripts": [
     {
       "matches": ["https://my.lgthinq.com/*"],
-      "js": ["src/content/index.ts"],
+      "js": ["src/content/content.ts"],
       "run_at": "document_idle"
     }
   ],

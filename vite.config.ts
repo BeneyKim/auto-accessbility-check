@@ -23,6 +23,7 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     sourcemap: true,
+    minify: false, // ACE 엔진(ace.js)이 minify 될 때 구문 오류가 발생하는 문제 방지
     chunkSizeWarningLimit: 1000,
   },
 });
