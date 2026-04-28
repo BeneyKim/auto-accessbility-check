@@ -1,0 +1,30 @@
+{
+  "manifest_version": 3,
+  "name": "LG ThinQ A11y Checker",
+  "description": "IBM Accessibility Checker 엔진 기반 LG ThinQ Web 접근성 자동 검사 도구",
+  "version": "0.1.0",
+  "permissions": [
+    "activeTab",
+    "storage",
+    "downloads",
+    "scripting"
+  ],
+  "host_permissions": [
+    "https://my.lgthinq.com/*"
+  ],
+  "background": {
+    "service_worker": "src/background/index.ts",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://my.lgthinq.com/*"],
+      "js": ["src/content/index.ts"],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_popup": "src/popup/index.html",
+    "default_title": "LG ThinQ A11y Checker"
+  }
+}

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=400, initial-scale=1.0" />
+  <title>LG ThinQ A11y Checker</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <div class="popup-container">
+    <!-- Header -->
+    <header class="popup-header">
+      <div class="header-icon">♿</div>
+      <div class="header-text">
+        <h1>ThinQ A11y Checker</h1>
+        <span class="version">v0.1.0</span>
+      </div>
+    </header>
+
+    <!-- Status Bar -->
+    <div id="status-bar" class="status-bar status-idle">
+      <span id="status-icon" class="status-icon">⏸</span>
+      <span id="status-text">대기 중</span>
+    </div>
+
+    <!-- Configuration Section -->
+    <section class="config-section">
+      <div class="config-row">
+        <label for="policy-select">정책 (Policy)</label>
+        <select id="policy-select">
+          <option value="IBM_Accessibility" selected>IBM Accessibility</option>
+          <option value="WCAG_2_2">WCAG 2.2 (A, AA)</option>
+          <option value="WCAG_2_1">WCAG 2.1 (A, AA)</option>
+          <option value="WCAG_2_0">WCAG 2.0 (A, AA)</option>
+        </select>
+      </div>
+
+      <div class="config-row">
+        <label for="product-name">제품명</label>
+        <input type="text" id="product-name" placeholder="e.g., 에어컨, 냉장고" />
+      </div>
+
+      <div class="config-row">
+        <label for="max-depth">최대 Depth</label>
+        <input type="number" id="max-depth" min="1" max="10" value="5" />
+      </div>
+
+      <div class="config-row">
+        <label for="anim-wait">애니메이션 대기 (ms)</label>
+        <input type="number" id="anim-wait" min="200" max="5000" step="100" value="1000" />
+      </div>
+
+      <!-- Waiver Rules Toggle -->
+      <details class="waiver-section">
+        <summary>🔧 Waiver 규칙 설정</summary>
+        <div class="waiver-content">
+          <textarea id="waiver-rules" rows="5" placeholder='[{"id":"W001","pattern":"color contrast","action":"flag","reason":"디자인 승인"}]'></textarea>
+          <button id="btn-apply-waiver" class="btn btn-secondary btn-sm">규칙 적용</button>
+        </div>
+      </details>
+    </section>
+
+    <!-- Progress Section -->
+    <section id="progress-section" class="progress-section hidden">
+      <div class="progress-bar-container">
+        <div id="progress-bar" class="progress-bar" style="width: 0%"></div>
+      </div>
+      <div class="progress-stats">
+        <div class="stat">
+          <span class="stat-label">화면</span>
+          <span id="stat-screens" class="stat-value">0</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">Depth</span>
+          <span id="stat-depth" class="stat-value">0</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">이슈</span>
+          <span id="stat-issues" class="stat-value">0</span>
+        </div>
+      </div>
+      <div id="progress-screen-name" class="progress-screen-name"></div>
+    </section>
+
+    <!-- Action Buttons -->
+    <section class="action-section">
+      <button id="btn-start" class="btn btn-primary">
+        ▶ 검사 시작
+      </button>
+      <button id="btn-stop" class="btn btn-danger hidden">
+        ■ 검사 중지
+      </button>
+    </section>
+
+    <!-- Export Section -->
+    <section id="export-section" class="export-section hidden">
+      <h2>📥 리포트 내보내기</h2>
+      <div class="export-buttons">
+        <button id="btn-export-json" class="btn btn-secondary">
+          📄 JSON
+        </button>
+        <button id="btn-export-md" class="btn btn-secondary">
+          📝 Markdown
+        </button>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="popup-footer">
+      <span>Powered by IBM ACE Engine (Apache-2.0)</span>
+    </footer>
+  </div>
+
+  <script src="popup.ts" type="module"></script>
+</body>
+</html>

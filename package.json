@@ -1,0 +1,25 @@
+{
+  "name": "lg-thinq-a11y-checker",
+  "version": "0.1.0",
+  "description": "IBM ACE 기반 LG ThinQ Web 접근성 자동 검사 Chrome Extension",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": ["accessibility", "a11y", "chrome-extension", "thinq"],
+  "author": "",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "@crxjs/vite-plugin": "^2.4.0",
+    "@types/chrome": "^0.1.40",
+    "typescript": "^6.0.3",
+    "vite": "^8.0.10"
+  },
+  "dependencies": {
+    "accessibility-checker-engine": "^4.0.16"
+  }
+}
